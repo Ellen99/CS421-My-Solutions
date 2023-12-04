@@ -1,0 +1,24 @@
+These problems ask you to create an evaluator for PicoML by writing the functions eval_dec, and eval_exp as specified. In addition, you are asked to implement the functions const_to_val, monOpApply and binOpApply.
+
+For each problem, you should refer to the list of rules given as part of the problem. The rules specify how evaluation should be carried out, using natural semantics. Natural semantics were covered in class; see the lecture notes for details.
+
+Here are some guidelines:
+
+eval_dec takes a top-level declaration and a memory, and returns a string option, value, and memory. Its type is dec * memory -> (string option * value) * memory.
+eval_exp takes an expression and a memory, and returns a value. Its type is exp * memory -> value.
+The problems are ordered such that simpler and more fundamental concepts come first. For this reason, it is recommended that you solve the problems in the order given. Doing so may make it easier for you to test your solution before it is completed.
+
+Here is a key to interpreting the rules:
+
+d = top-level declaration
+m = memory represented as a value env
+e = expression
+v = value
+– n, i, j = integer
+– r = float
+– s = string
+– c = monadic (unary) operator
+x = identifier/variable
+f = identifier/variable of functional type
+t = constant
+As mentioned, you should test your code in the executable PicoML environment. The problem statements that follow include some examples. However, the problem statements also contain test cases that can be used to test your implementation in the OCaml environment.
