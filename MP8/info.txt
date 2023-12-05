@@ -1,0 +1,4 @@
+A Lexer for PicoML, tokens
+The purpose of this question is to help the student master:
+
+Writing input to lex in the form of regular expressions and actions to generate a lexer for a given language.
