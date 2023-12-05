@@ -1,0 +1,186 @@
+Output
+
+Grade report for hoare_logic_problem.json
+hoare_logic_problem.ml
+=====================================
+
+*Regular Problems:
+Grading script score  => [23 / 23]
+Total                 => 23
+Score                 => 1.0
+
+
+grader program output
+---------------------
+
+
+Inference: 
+1. {w > 3} if w > 4 then y:=w  -  2 else y:=w  -  1 fi {(w > 3) & (y >= 3)}
+2. {(w > 3) & (y >= 3)} y:=y  +  w {y > 6}
+---------------------------------------------------------------------------
+  {w > 3} if w > 4 then y:=w  -  2 else y:=w  -  1 fi; y:=y  +  w {y > 6}
+Status: 
+  No errors!
+  Use of rule `Seq` is worth 3 points.
+
+
+Inference: 
+1. {(w > 3) & (w > 4)} y:=w  -  2 {(w > 3) & (y >= 3)}
+2. {(w > 3) & (not (w > 4))} y:=w  -  1 {(w > 3) & (y >= 3)}
+---------------------------------------------------------------------------
+  {w > 3} if w > 4 then y:=w  -  2 else y:=w  -  1 fi {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `IfThenElse` is worth 5 points.
+
+
+Inference: 
+1. {(w > 3) & (w  -  2 >= 3)} y:=w  -  2 {(w > 3) & (y >= 3)}
+---------------------------------------------------------------------------
+  {(w > 3) & (w > 4)} y:=w  -  2 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `PreStr` is worth 3 points.
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {(w > 3) & (w  -  2 >= 3)} y:=w  -  2 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Inference: 
+1. {(w > 3) & (w  -  1 >= 3)} y:=w  -  1 {(w > 3) & (y >= 3)}
+---------------------------------------------------------------------------
+  {(w > 3) & (not (w > 4))} y:=w  -  1 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `PreStr` is worth 3 points.
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {(w > 3) & (w  -  1 >= 3)} y:=w  -  1 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Inference: 
+1. {y  +  w > 6} y:=y  +  w {y > 6}
+---------------------------------------------------------------------------
+  {(w > 3) & (y >= 3)} y:=y  +  w {y > 6}
+Status: 
+  No points given because max credit for use of rule `PreStr` has already been given.
+
+Points lost: 0
+
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {y  +  w > 6} y:=y  +  w {y > 6}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Total: [23 / 23]
+
+Additional output from compiling students code (may be empty)
+----------------------------------------------------
+
+
+..................................................
+
+Student's code 
+----------------------------------------------------
+
+open Genutils;;
+ let tree = [("root-l0a", {str_label  = "Seq";str_left   = "w > 3";str_middle = "if w > 4 then y := w - 2 else y := w - 1 fi; y := y + w";str_right  = "y > 6";str_sideCondition = ""});
+("root-l0a-l1a", {str_label  = "IfThenElse";str_left   = "w > 3";str_middle = "if w > 4 then y := w - 2 else y := w - 1 fi";str_right  = "w>3 & y >= 3";str_sideCondition = ""});
+("root-l0a-l1a-l2a", {str_label  = "PreStr";str_left   = "w > 3 & w > 4";str_middle = "y := w - 2";str_right  = "w >3 & y>=3";str_sideCondition = "w > 3 & w > 4 -->w >3 & w-2>=3"});
+("root-l0a-l1a-l2a-l3a", {str_label  = "Assign";str_left   = "w > 3 & w-2>=3";str_middle = "y := w - 2";str_right  = "w > 3 & y>=3";str_sideCondition = ""});
+("root-l0a-l1a-l2b", {str_label  = "PreStr";str_left   = "w > 3 & not (w>4)";str_middle = "y := w - 1";str_right  = "w > 3 & y >= 3";str_sideCondition = "w > 3 & not (w>4) --> w>3 & w-1>=3"});
+("root-l0a-l1a-l2b-l3a", {str_label  = "Assign";str_left   = "w>3 & w-1>=3";str_middle = "y := w - 1";str_right  = "w>3 & y>=3";str_sideCondition = ""});
+("root-l0a-l1b", {str_label  = "PreStr";str_left   = "w>3 & y >= 3";str_middle = "y := y + w";str_right  = "y > 6";str_sideCondition = "w>3 & y >=3 --> y+w>6"});
+("root-l0a-l1b-l2a", {str_label  = "Assign";str_left   = "y+w>6";str_middle = "y := y + w";str_right  = "y>6";str_sideCondition = ""});
+]
+
+
+Stdout
+----------------------------------------------------
+
+Inference: 
+1. {w > 3} if w > 4 then y:=w  -  2 else y:=w  -  1 fi {(w > 3) & (y >= 3)}
+2. {(w > 3) & (y >= 3)} y:=y  +  w {y > 6}
+---------------------------------------------------------------------------
+  {w > 3} if w > 4 then y:=w  -  2 else y:=w  -  1 fi; y:=y  +  w {y > 6}
+Status: 
+  No errors!
+  Use of rule `Seq` is worth 3 points.
+
+
+Inference: 
+1. {(w > 3) & (w > 4)} y:=w  -  2 {(w > 3) & (y >= 3)}
+2. {(w > 3) & (not (w > 4))} y:=w  -  1 {(w > 3) & (y >= 3)}
+---------------------------------------------------------------------------
+  {w > 3} if w > 4 then y:=w  -  2 else y:=w  -  1 fi {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `IfThenElse` is worth 5 points.
+
+
+Inference: 
+1. {(w > 3) & (w  -  2 >= 3)} y:=w  -  2 {(w > 3) & (y >= 3)}
+---------------------------------------------------------------------------
+  {(w > 3) & (w > 4)} y:=w  -  2 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `PreStr` is worth 3 points.
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {(w > 3) & (w  -  2 >= 3)} y:=w  -  2 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Inference: 
+1. {(w > 3) & (w  -  1 >= 3)} y:=w  -  1 {(w > 3) & (y >= 3)}
+---------------------------------------------------------------------------
+  {(w > 3) & (not (w > 4))} y:=w  -  1 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `PreStr` is worth 3 points.
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {(w > 3) & (w  -  1 >= 3)} y:=w  -  1 {(w > 3) & (y >= 3)}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Inference: 
+1. {y  +  w > 6} y:=y  +  w {y > 6}
+---------------------------------------------------------------------------
+  {(w > 3) & (y >= 3)} y:=y  +  w {y > 6}
+Status: 
+  No points given because max credit for use of rule `PreStr` has already been given.
+
+Points lost: 0
+
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {y  +  w > 6} y:=y  +  w {y > 6}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.

@@ -1,0 +1,33 @@
+In doing the problem below, every step must be entered separately, pushing the Check button after each individual step.
+
+Each line you enter is of one of two forms:
+
+=a= term if the given step is an -equivalence. You may apply -equivalence as any step. There may be instances in which it is necessary. Using  -equivalence will not directly gain you points, although doing it incorrectly will count as an error.
+-B-> term if the given step is a -reduction compatible with the definition of -evaluation.
+Your final term should be one that can not be reduced by  -reduction any further, even after swapping the term for one that is -equivalent.
+You must enter one step at a time and you need to click Check after each step you enter.
+
+
+(% x. x (% y. x y)) (% z. (% v. (% w. (z w) (w v) y))) ((% u. u u)(%w. w))
+
+=a= (% x. x (% t. x t)) (% z. (% v. (% w. (z w) (w v) y))) ((% u. u u)(%w. w))
+
+-B-> (% z. (% v. (% w. (z w) (w v) y))) (% t. (% z. (% v. (% w. (z w) (w v) y))) t) ((% u. u u)(%w. w))
+
+-B-> (% v. (% w. ( (% t. (% z. (% v. (% w. (z w) (w v) y))) t) w) (w v) y)) ((% u. u u)(%w. w))
+
+-B-> (% v. (% w. ( (% t. (% z. (% v. (% w. (z w) (w v) y))) t) w) (w v) y)) ((%w. w) (%w. w))
+
+-B-> (% v. (% w. ( (% t. (% z. (% v. (% w. (z w) (w v) y))) t) w) (w v) y)) (%w. w)
+
+-B-> (% w. ( (% t. (% z. (% v. (% w. (z w) (w v) y))) t) w) (w  (%w. w)) y)
+
+-B-> (% w. ( (% z. (% v. (% w. (z w) (w v) y))) w) (w  (%w. w)) y)
+
+=a=  (% w. ( (% z. (% v. (% r. (z r) (r v) y))) w) (w  (%w. w)) y)
+
+-B-> (% w.         (% v. (% r. (w r) (r v) y))     (w  (%w. w)) y)
+
+-B-> (% w.               (% r. (w r) (r (w  (%w. w))) y)        y)
+
+-B-> (% w.                     (w y) (y  (w  (%w. w))) y         )

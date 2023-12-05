@@ -1,0 +1,129 @@
+Output
+
+Grade report for hoare_logic_problem.json
+hoare_logic_problem.ml
+=====================================
+
+*Regular Problems:
+Grading script score  => [12 / 12]
+Total                 => 12
+Score                 => 1.0
+
+
+grader program output
+---------------------
+
+
+Inference: 
+1. {(a = 9) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+2. {(a = 22) & (b = 13)} b:=a  -  b {b = 9}
+---------------------------------------------------------------------------
+  {(a = 9) & (b = 13)} a:=a  +  b; b:=a  -  b {b = 9}
+Status: 
+  No errors!
+  Use of rule `Seq` is worth 3 points.
+
+
+Inference: 
+1. {(a  +  b = 22) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+---------------------------------------------------------------------------
+  {(a = 9) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+Status: 
+  No errors!
+  Use of rule `PreStr` is worth 3 points.
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {(a  +  b = 22) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Inference: 
+1. {a  -  b = 9} b:=a  -  b {b = 9}
+---------------------------------------------------------------------------
+  {(a = 22) & (b = 13)} b:=a  -  b {b = 9}
+Status: 
+  No points given because max credit for use of rule `PreStr` has already been given.
+
+Points lost: 0
+
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {a  -  b = 9} b:=a  -  b {b = 9}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Total: [12 / 12]
+
+Additional output from compiling students code (may be empty)
+----------------------------------------------------
+
+
+..................................................
+
+Student's code 
+----------------------------------------------------
+
+open Genutils;;
+ let tree = [("root-l0a", {str_label  = "Seq";str_left   = "a = 9 & b = 13";str_middle = "a := a + b; b := a - b";str_right  = "b = 9";str_sideCondition = ""});
+("root-l0a-l1a", {str_label  = "PreStr";str_left   = "a = 9 & b = 13";str_middle = "a := a + b";str_right  = "a=22 & b = 13";str_sideCondition = "a = 9 & b = 13 --> a+b =22 & b =13"});
+("root-l0a-l1a-l2a", {str_label  = "Assign";str_left   = "a+b = 22 & b = 13";str_middle = "a := a + b";str_right  = "a=22 & b = 13";str_sideCondition = ""});
+("root-l0a-l1b", {str_label  = "PreStr";str_left   = "a=22 & b = 13";str_middle = "b := a - b";str_right  = "b = 9";str_sideCondition = "a=22 & b = 13 --> a-b=9"});
+("root-l0a-l1b-l2a", {str_label  = "Assign";str_left   = "a-b=9";str_middle = "b := a - b";str_right  = "b = 9";str_sideCondition = ""});
+]
+
+
+Stdout
+----------------------------------------------------
+
+Inference: 
+1. {(a = 9) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+2. {(a = 22) & (b = 13)} b:=a  -  b {b = 9}
+---------------------------------------------------------------------------
+  {(a = 9) & (b = 13)} a:=a  +  b; b:=a  -  b {b = 9}
+Status: 
+  No errors!
+  Use of rule `Seq` is worth 3 points.
+
+
+Inference: 
+1. {(a  +  b = 22) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+---------------------------------------------------------------------------
+  {(a = 9) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+Status: 
+  No errors!
+  Use of rule `PreStr` is worth 3 points.
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {(a  +  b = 22) & (b = 13)} a:=a  +  b {(a = 22) & (b = 13)}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
+
+
+Inference: 
+1. {a  -  b = 9} b:=a  -  b {b = 9}
+---------------------------------------------------------------------------
+  {(a = 22) & (b = 13)} b:=a  -  b {b = 9}
+Status: 
+  No points given because max credit for use of rule `PreStr` has already been given.
+
+Points lost: 0
+
+
+
+Inference: 
+---------------------------------------------------------------------------
+  {a  -  b = 9} b:=a  -  b {b = 9}
+Status: 
+  No errors!
+  Use of rule `Assign` is worth 3 points.
