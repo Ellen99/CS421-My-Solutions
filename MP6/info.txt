@@ -1,0 +1,7 @@
+MP6.1. A Unification-Based Type Inferencer, gather_exp_ty_substitution
+A Unification-Based Type Inferencer, gather_exp_ty_substitution
+The purpose of this question is to help the student master:
+
+Using record types and variant types, particularly as used in giving Abstract Syntax Trees.
+The notation for semantic specifications.
+The type-inference algorithm.
