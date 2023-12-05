@@ -1,0 +1,26 @@
+Unification Algorithm
+
+MP7.1. Substitution, subst_fun
+Substituion, subst_funs
+The purpose of this question is to help the student master:
+
+Substitution.
+
+MP7.2. Substitution, monoTy_lift_subst
+Substituion, monoTy_lift_substs
+The purpose of this question is to help the student master:
+
+Substitution.
+
+MP7.3. A Unification-Based Type Inferencer, occurs
+A Unification-Based Type Inferencer, occurs
+The purpose of this question is to help the student master:
+
+The unificaiton algorithm.
+
+
+MP7.4. A Unification-Based Type Inferencer, unify
+A Unification-Based Type Inferencer, unify
+The purpose of this question is to help the student master:
+
+The unificaiton algorithm.
