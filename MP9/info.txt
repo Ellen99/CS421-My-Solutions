@@ -1,0 +1,345 @@
+A Parser for PicoML
+The purpose of this question is to help the student master:
+
+Writing input to YACC in the form of an unamiguous attribute grammar to generate an LR(1) parser for a given language.
+Disambiguate a grammar to make it suitable for parsing algorithms.
+
+
+
+Problems
+Problems Preface
+At this point, what you have to do for this assignment should already be fairly clear. The following problems just break your assignment into pieces and are meant to guide you towards the solution. A word of warning is however in order here: The problem of writing a parser is not a modular one because the parsing of each language construct depends on all the other constructs. Adding a new syntactic category may well force you to go back and rewrite all the categories already present. Therefore you should approach the set of problems as a whole, and always keep in mind the precedences and associativities given for the PicoML constructs.
+
+You are allowed, and even encouraged, to add to your grammar new nonterminals (together with new productions) in addition to the one that we require (main). In addition, you may find it desirable to rewrite or reorganize the various productions we have given you. The productions given are intended only to be enough to allow you to start testing your additions.
+
+Also, it is allowed that you define the constructs in an order that is different from the one we have given here. For instance, we have gathered the requirements according to overall syntactic and semantic similarities (e.g., grouping arithmetic operators together); you may rather want to group the constructs according to their precedence; you are absolutely free to do that. However, we require that the non-terminal main that we introduced in the problem statement be present in your grammar and that it produces parses for exactly the same set of strings as described by the grammar in the Section Problem Setting, obeying the precedences and associativities also described in that section.
+
+In between each of these examples we have reset the environment.
+
+In this problem you are asked to complete an ocamlyacc file to implement a parser for PicoML.
+
+Constants
+(5 pts) In the file parse.mly, add the integer, unit, boolean, float, and string constants.
+
+Below is an example for string constants; the parsing of other constants should be the same; only their specific values and types inferred will differ.
+
+> "hi";;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = "hi" : {}
+  |--{} |= "hi" : string
+Parentheses
+Add parentheses.
+
+> ("hi");;
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = "hi" : {}
+  |--{} |= "hi" : string
+Pairs
+Add pairs. Note that unlike OCaml, PicoML requires opening and closing parentheses around pairs.
+
+> ("hi",3);;
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = ("hi" , 3) : {}
+  |--{} |= ("hi" , 3) : string * int
+    |--{} |= "hi" : string
+    |--{} |= 3 : int
+Unary Operators
+Add unary operators. These should be treated for precedence and associativity as an application of single argument functions.
+
+> hd [];;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = hd [] : {}
+  |--{} |= hd [] : 'c
+    |--{} |= [] : 'c list
+Comparison Operators
+Add comparison operators.
+
+> 3 < 5;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = 5  >  3 : {}
+  |--{} |= 5  >  3 : bool
+    |--{} |= 5 : int
+    |--{} |= 3 : int
+Infix Operators
+Add infix operators. You will need to heed the precedence and associativity rules given in the table above.
+
+> 3 + 4 * 8;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = 3  +  (4  *  8) : {}
+  |--{} |= 3  +  (4  *  8) : int
+    |--{} |= 3 : int
+    |--{} |= 4  *  8 : int
+      |--{} |= 4 : int
+      |--{} |= 8 : int
+List Consing
+Add :: (list consing).
+
+> 3 :: 2 :: 1 :: [];;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = 3  ::  (2  ::  (1  ::  [])) : {}
+  |--{} |= 3  ::  (2  ::  (1  ::  [])) : int list
+    |--{} |= 3 : int
+    |--{} |= 2  ::  (1  ::  []) : int list
+      |--{} |= 2 : int
+      |--{} |= 1  ::  [] : int list
+        |--{} |= 1 : int
+        |--{} |= [] : int list
+let and let rec Expressions
+Add let_in_ and let_rec_in.
+
+> let rec f x = 3 :: x :: (f x) in f 8;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = let rec f x = 3  ::  (x  ::  (f x)) in f 8 : {}
+  |--{} |= let rec f x = 3  ::  (x  ::  (f x)) in f 8 : int list
+    |--{x : int, f : int -> int list} |= 3  ::  (x  ::  (f x)) : int list
+    | |--{x : int, f : int -> int list} |= 3 : int
+    | |--{x : int, f : int -> int list} |= x  ::  (f x) : int list
+    |   |--{x : int, f : int -> int list} |= x : int
+    |   |--{x : int, f : int -> int list} |= f x : int list
+    |     |--{x : int, f : int -> int list} |= f : int -> int list
+    |     |--{x : int, f : int -> int list} |= x : int
+    |--{f : int -> int list} |= f 8 : int list
+      |--{f : int -> int list} |= f : int -> int list
+      |--{f : int -> int list} |= 8 : int
+if and fun Expressions
+[iffnprob] (20 pts) Add fun__->__ and if__then__else__.
+
+> if true then fun x -> 3 else fun x -> 4;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = if true then fun x -> 3 else fun x -> 4 : {}
+  |--{} |= if true then fun x -> 3 else fun x -> 4 : 'c -> int
+    |--{} |= true : bool
+    |--{} |= fun x -> 3 : 'c -> int
+    | |--{x : 'c} |= 3 : int
+    |--{} |= fun x -> 4 : 'c -> int
+      |--{x : 'c} |= 4 : int
+Applications
+Add application.
+
+> (fun x -> x + x + 3) 4;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = (fun x -> (x  +  x)  +  3) 4 : {}
+  |--{} |= (fun x -> (x  +  x)  +  3) 4 : int
+    |--{} |= fun x -> (x  +  x)  +  3 : int -> int
+    | |--{x : int} |= (x  +  x)  +  3 : int
+    |   |--{x : int} |= x  +  x : int
+    |   | |--{x : int} |= x : int
+    |   | |--{x : int} |= x : int
+    |   |--{x : int} |= 3 : int
+    |--{} |= 4 : int
+Logical Connectives
+Add  and .
+
+> true || false && true;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = if true then true else if false then true else false : {}
+  |--{} |= if true then true else if false then true else false : bool
+    |--{} |= true : bool
+    |--{} |= true : bool
+    |--{} |= if false then true else false : bool
+      |--{} |= false : bool
+      |--{} |= true : bool
+      |--{} |= false : bool
+raise for Raising Exceptions
+Add raise.
+
+> raise (fun x -> x) 4 + 3;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = (raise (fun x -> x) 4)  +  3 : {}
+  |--{} |= (raise (fun x -> x) 4)  +  3 : int
+    |--{} |= raise (fun x -> x) 4 : int
+    | |--{} |= (fun x -> x) 4 : int
+    |   |--{} |= fun x -> x : int -> int
+    |   | |--{x : int} |= x : int
+    |   |--{} |= 4 : int
+    |--{} |= 3 : int
+
+Extra Credit
+List Syntactic Sugar
+Add syntactic sugar for lists to your expressions. More precisely, add the following expressions to the grammar:
+
+
+
+where list_contents is a non-empty sequence of expressions separated by semicolons. It has to be the case that semicolon binds less tightly than any other language construct or operator.
+
+> [1; 2; 3];;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = 1  ::  (2  ::  (3  ::  [])) : {}
+  |--{} |= 1  ::  (2  ::  (3  ::  [])) : int list
+    |--{} |= 1 : int
+    |--{} |= 2  ::  (3  ::  []) : int list
+      |--{} |= 2 : int
+      |--{} |= 3  ::  [] : int list
+        |--{} |= 3 : int
+        |--{} |= [] : int list
+try_with_ for Handling Exceptions
+Add try_with_. Be sure to notice how the expression is parsed in the example: pipes are associated with the right-most preceding try-with (the ambiguity this fixes is analogous to the dangling-else problem when you have bot an if_then_else_ and an if_then_.)
+
+Valid patterns have the form n -> e, where n is to be represented by Some wrapped around an integer, or _ -> e, where _ is represented is to be represented by None.
+
+> try 0 with 1 -> 1 | 2 -> try 2 with _ -> 3 | 4 -> 4;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = try 0 with 1 -> 1 | 2 -> try 2 with _ -> 3 | 4 -> 4 : {}
+  |--{} |= try 0 with 1 -> 1 | 2 -> try 2 with _ -> 3 | 4 -> 4 : int
+    |--{} |= 0 : int
+    |--{} |= 1 : int
+    |--{} |= try 2 with _ -> 3 | 4 -> 4 : int
+      |--{} |= 2 : int
+      |--{} |= 3 : int
+      |--{} |= 4 : int
+Additional Tests
+More Tests To Check Out
+Can you pass this test? Make sure your parser parses the expression as in the example.
+
+> 3 - 4 - 2 * 9 < 10 && true ;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = if 10  >  ((3  -  4)  -  (2  *  9)) then true else false : {}
+  |--{} |= if 10  >  ((3  -  4)  -  (2  *  9)) then true else false : bool
+    |--{} |= 10  >  ((3  -  4)  -  (2  *  9)) : bool
+    | |--{} |= 10 : int
+    | |--{} |= (3  -  4)  -  (2  *  9) : int
+    |   |--{} |= 3  -  4 : int
+    |   | |--{} |= 3 : int
+    |   | |--{} |= 4 : int
+    |   |--{} |= 2  *  9 : int
+    |     |--{} |= 2 : int
+    |     |--{} |= 9 : int
+    |--{} |= true : bool
+    |--{} |= false : bool
+This one?
+
+> if true then 1 else 0 + 2;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = if true then 1 else 0  +  2 : {}
+  |--{} |= if true then 1 else 0  +  2 : int
+    |--{} |= true : bool
+    |--{} |= 1 : int
+    |--{} |= 0  +  2 : int
+      |--{} |= 0 : int
+      |--{} |= 2 : int
+How about this one?
+
+> (fun x -> ()) 3;;
+
+
+final environment:
+
+{}
+
+proof:
+
+  {} |= let _ = (fun x -> ()) 3 : {}
+  |--{} |= (fun x -> ()) 3 : unit
+    |--{} |= fun x -> () : int -> unit
+    | |--{x : int} |= () : unit
+    |--{} |= 3 : int
