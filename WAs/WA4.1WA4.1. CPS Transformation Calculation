@@ -1,0 +1,21 @@
+Problem
+cps_trans1a
+[[ if x > 2 then 3 else x + 3]] _k
+=> [[x > 2]] (FN a-> IF a THEN [[3]] _k ELSE [[x+3]] _k)
+=> [[x > 2]] (FN a-> IF a THEN _k 3 ELSE [[x+3]] _k)
+=> [[2]] (FN b-> [[x]] (FN c -> (FN a-> IF a THEN _k 3 ELSE [[x+3]] _k) (c > b) ))
+=> [[2]] (FN b-> [[x]] (FN c -> (FN a-> IF a THEN _k 3 ELSE [[3]] (FN d -> [[x]] (FN e -> _k (e + d)))) (c > b) ))
+=> (FN b-> (FN c -> (FN a-> IF a THEN _k 3 ELSE (FN d -> (FN e -> _k (e + d)) x ) 3 ) (c > b) ) x) 2
+
+cps_trans1b
+[[ let plus_x = fun y -> x + y in plus_x x]] _k
+=> [[fun y -> x + y]] (FN plus_x -> [[plus_x x]] _k)
+=> (FN plus_x -> [[plus_x x]] _k) (FUN y _k ->[[x + y]] _k)
+=> (FN plus_x -> [[plus_x x]] _k) (FUN y _k -> [[y]] (FN a -> [[x]] (FN b -> _k (b + a) )))
+=> (FN plus_x -> [[plus_x x]] _k) (FUN y _k -> [[y]] (FN a -> (FN b -> _k (b + a) ) x))
+=> (FN plus_x -> [[plus_x x]] _k) (FUN y _k -> (FN a -> (FN b -> _k (b + a)) x) y)
+=> (FN plus_x -> [[x]] (FN c -> [[plus_x]] (FN d -> d c _k))) (FUN y _k -> (FN a -> (FN b -> _k (b + a)) x) y)
+=> (FN plus_x -> (FN c -> (FN d -> d c _k) plus_x) x) (FUN y _k -> (FN a -> (FN b -> _k (b + a)) x) y)
+
+
+

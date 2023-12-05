@@ -1,0 +1,122 @@
+MP4.1. Continuation Passing Style, low level functions
+
+Problem
+Write the following low-level functions in continuation-passing style. A description of what each function should do follows:
+consk creates a new list by adding an element to the front of a list.
+concatk concatenates two strings in the order they are provided.
+string_of_intk takes an integer and converts it into a string.
+truncatek takes a float n and truncates it in the same way as the truncate function which can be found in the pervasives module.
+# let consk (x, l) k = ... ;;
+val consk : 'a * 'a list -> ('a list -> 'b) -> 'b = 
+# let concatk (s1, s2) k = ... ;;
+val concatk : string * string -> (string -> 'a) -> 'a = 
+# let string_of_intk n k = ... ;;
+val string_of_intk : int -> (string -> 'a) -> 'a = 
+# let truncatek x k = ... ;;
+val truncatek : float -> (int -> 'a) -> 'a = 
+
+# consk (1, []) (List.map string_of_int);;
+- : string list = ["1"]
+# concatk ("hello", "world") (fun s -> (s, String.length s));;
+- : string * int = ("helloworld", 10)
+# string_of_intk 0 (fun s -> (s, String.length s));;
+- : string * int = ("0", 1)
+# truncatek 3.14 string_of_int;;
+- : string = "3"
+
+
+MP4.2. Continuation Passing Style, three_freeze
+
+Problem
+Write a function three_freezek: string * string -> (string -> 'a) -> 'a that takes two string arguments s and p and calculates the string formed by concatenating them as sp. The function will then "return" the string made by repeating this string, and then on its left, repeating it once more. In the end, sp will be repeated three times in a row, but you should only calculate sp once.
+# let three_freezek (s, p) k = ... ;;
+val three_freezek : string * string -> (string -> 'a) -> 'a = <fun>
+
+# three_freezek ("muda", "plop") (fun s -> (s , String.length s));;
+- : string * int = ("mudaplopmudaplopmudaplop", 24)
+
+
+MP4.3. Continuation Passing Style, shift
+
+Problem
+Write a function shiftk : string * float -> (string -> 'a) -> 'a that takes a string argument s and a float argument q. This function will calculate  using only functions from Common in continuation passing style. You should only calcualate  once. After calculating , its value should be truncated, turned it into a string, and then have the string s concatenated first to the beginning and then to the end of the resulting string. This string is then "returned". 
+When using functions from Common, please always wrap them in a function expression to make their arguments explicit.
+# let shiftk (s, q) k = ... ;;
+val shiftk : string * float -> (string -> 'a) -> 'a = 
+
+# shiftk ("##", 3.14) (fun s -> s);;
+- : string = "##22##"
+
+MP4.4. Continuation Passing Style, all_positive
+
+Problem
+Write a function all_positive : int list -> bool that returns true if all the elements in the list are positive, and false otherwise. The function is required to use (only) tail recursion (no other form of recursion). You may not use any library functions.
+
+This problem does not require an auxiliary function.
+
+Caution: There is no direct CSP version of && and ||, the short-circuit logical connectives. However, these are actually syntactic sugar for an if-then-else and you should use if-then-else in place of either of these to facilitate your translation into CPS.
+# let rec all_positive l = ...
+val all_positive : int list -> bool = <fun>
+all_positive [5;3;6;(-1);7];;
+- : bool = false
+
+
+Write a function all_positivek : int list -> (bool -> 'a) -> 'a that is the CPS transformation of the function you gave for part a.
+# let rec all_positivek l k = ...
+val all_positivek : int list -> (bool -> 'a) -> 'a = 
+# all_positivek [5;3;6;(-1);7] (fun b -> if b then "true" else "false");;
+- : string = "false"
+
+MP4.5. Continuation Passing Style, even_count
+
+Problem
+Write a function even_count : int list -> int that returns the number of even integers found in the input list. The only form of recursion you may use for this problem is forward recursion. You may not use library functions in this part.
+# let rec even_count l = ... ;;
+val even_count : int list -> int = <fun>
+# even_count [1;2;3];;
+- : int = 1
+
+
+Write a function even_countk : int list -> (int -> 'a) -> 'a that is the CPS transformation of the code you wrote for the previous part.
+# let rec even_countk l k = ... ;;
+val even_countk : int list -> (int -> 'a) -> 'a = <fun>
+# even_countk [1;2;3] report_int;;
+Result: 1
+- : unit = ()
+
+
+MP4.6. Continuation Passing Style, find_all
+
+Problem
+Write a function find_all : ('a -> bool) * 'a list -> 'a list that returns a list of all the elements in the input list l for which the input predicate p returns true, preserving the order and number of occurrences of the element satisfying p. You may not use library functions in this part.
+Write a function find_allk : ('a -> (bool -> 'b) -> 'b) * 'a list -> ('a list -> b) -> 'b that is the CPS transformation of the code you wrote for the previous part.
+# let rec find_all (p, l) = ... ;;
+val find_all : ('a -> bool) * 'a list -> 'a list = <fun>
+# find_all ( (fun x -> x mod 2 = 0), [-3; 5; 2; -6] );;
+- : int list = [2; -6]
+
+# let rec find_allk (p, l) k = ... ;;
+val find_allk : ('a -> (bool -> 'b) -> 'b) * 'a list -> ('a list -> 'b) -> 'b =
+  <fun>
+# find_allk ((fun x -> fun k -> modk (x, 2) (fun n -> eqk (n, 0) k)),
+             [-3; 5; 2; -6] ) print_int_list;;
+[2; -6]
+- : unit = ()
+
+MP4.7. Continuation Passing Style, sum_all
+
+Problem
+Write a function sum_all : (float -> bool) * float list -> float that returns the floating point sum of all the elements in the input list l for which the input predicate p returns true, including multiplicity. If there are no elements satisfing p, it returns 0.0.
+The only form of recursion you may use for this problem is forward recursion. You may not use library functions or helper functions in this part.
+    # let rec sum_all (p, l) = ...;;
+    val sum_all : (float -> bool) * float list -> float = <fun>
+    # sum_all ( (fun x -> x => 1.5),  [1.3;2.5;3.9] );;
+    - : float = 6.4
+
+Write a function sum_allk : (float -> (bool -> 'a) -> 'a) * float list -> (float -> 'a) -> 'a that is the CPS transformation of the code you wrote for sum_all. Be careful of the types.
+    # let rec sum_allk (p,l) k = ...;;
+    val sum_allk : (float -> (bool -> 'a) -> 'a) * float list -> (float -> 'a) -> 'a = <fun>
+    # sum_allk ((fun x -> fun k -> geqk (x,1.5) k), [1.3;2.5;3.9] ) report_float;;
+    Result: 6.4
+    - : unit = ()
+

@@ -1,0 +1,21 @@
+Recursive User-Defined Algebraic Data Types import_list
+The purpose of this question is to help students master:
+
+Constructing data structures from algebraic data types
+
+
+Throughout this assignment you may use any library functions you wish.
+
+Problem
+Using the type exp found in common.ml and described above, write a function import_list : (int * int) list -> exp that takes a list of pairs and converts it into an expression in our language that is equivalent to it.
+# let rec import_list lst = ...;;  
+val import_list : (int * int) list -> Common.exp = <fun>
+# import_list [(7,1);(4,2);(6,3)];;
+- : Common.exp =
+BinOpAppExp (ConsOp,
+ BinOpAppExp (CommaOp, ConstExp (IntConst 7), ConstExp (IntConst 1)),
+ BinOpAppExp (ConsOp,
+  BinOpAppExp (CommaOp, ConstExp (IntConst 4), ConstExp (IntConst 2)),
+  BinOpAppExp (ConsOp,
+   BinOpAppExp (CommaOp, ConstExp (IntConst 6), ConstExp (IntConst 3)),
+   ConstExp NilConst)))

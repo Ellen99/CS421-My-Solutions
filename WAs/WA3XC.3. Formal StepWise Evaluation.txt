@@ -1,0 +1,60 @@
+Eval_calc1a
+["Eval(if Eval(x>2,{x->1}) then 3 else x+3 ,{x->1})";
+ "Eval(if Eval(x>Eval(2,{x->1}),{x->1}) then 3 else x+3 ,{x->1})";
+ "Eval(if Eval(x>Val 2,{x->1}) then 3 else x+3 ,{x->1})";
+ "Eval(if Eval(Eval(x,{x->1})>Val 2,{x->1}) then 3 else x+3 ,{x->1})";
+ "Eval(if Eval(Val 1>Val 2,{x->1}) then 3 else x+3 ,{x->1})";
+ "Eval(if Val false then 3 else x+3 ,{x->1})";
+ "Eval(x+3,{x->1})";
+ "Eval(x+Eval(3,{x->1}),{x->1})";
+ "Eval(x+Val3l 3,{x->1})";
+ "Eval(x+Val 3,{x->1})";
+ "Eval(Eval(x,{x->1})+Val 3,{x->1})";
+ "Eval(Val 1 +Val 3,{x->1})";
+ "Val 4"]
+
+eval_calc1b
+["Eval(let plus_x = Eval(fun y -> x + y,{x -> 5}) in plus_x x, {x -> 5})";
+ "Eval(let plus_x = Val <y -> x + y,{x -> 5}> in plus_x x, {x -> 5})";
+ "Eval(plus_x x, {plus_x -> <y -> x + y,{x -> 5}>,x->5})";
+ "Eval(plus_x Eval(x,{plus_x -> <y -> x + y,{x -> 5}>,x->5}), {plus_x -> <y -> x + y,{x -> 5}>,x->5})";
+ "Eval(plus_x Val 5, {plus_x -> <y -> x + y,{x -> 5}>,x->5})";
+ "Eval(Eval(plus_x,{plus_x -> <y -> x + y,{x -> 5}>,x->5}) Val 5, {plus_x -> <y -> x + y,{x -> 5}>,x->5})";
+ "Eval(Val <y -> x + y,{x -> 5}>,x->5 Val 5, {plus_x -> <y -> x + y,{x -> 5}>,x->5})";
+ "Eval(Val <y -> x + y,{x -> 5}> Val 5, {plus_x -> <y -> x + y,{x -> 5}>,x->5})";
+ "Eval(x + y,{y->5}+{x -> 5})";
+ "Eval(x + y,{y->5,x -> 5})";
+ "Eval(x + Eval(y,{y->5,x -> 5}),{y->5,x -> 5})";
+ "Eval(Eval(x,{y->5,x -> 5}) + Val5,{y->5,x -> 5})";
+ "Eval(Eval(x,{y->5,x -> 5}) + Val 5,{y->5,x -> 5})";
+ "Eval(x+ Val 5,{y->5,x -> 5})";
+ "Eval(Eval(x,{y->5,x -> 5}) + Val 5,{y->5,x -> 5})";
+ "Eval(Val 5+ Val 5,{y->5,x -> 5})";
+ "Val 10"]
+
+
+
+
+
+eval_calc1c
+
+Eval(let m = fun x -> fun y -> x * y in m y x, {x -> 3, y -> 5}))
+Eval(let m = Eval(fun x -> fun y -> x * y, {x -> 3, y -> 5}) in m y x, {x -> 3, y -> 5}))
+Eval(let m = Val <x -> fun y -> x * y, {x -> 3, y -> 5}> in m y x, {x -> 3, y -> 5}))
+Eval(m y x, {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(m y Eval(x,{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5}), {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(m y Val 3, {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(Eval (m y, {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})(Val 3),{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(Eval (m Eval( y,{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5}), {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})(Val 3),{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(Eval (m Val 5, {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})(Val 3),{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(Eval (Eval (m, {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5}) (Val 5), {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})(Val 3),{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(Eval(Val <x -> fun y -> x * y, {x -> 3, y -> 5}>(Val 5), {m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})(Val 3),{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval( Eval(fun y -> x * y,{x -> 5, y -> 5}) (Val 3),{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(Val(<y -> x * y,{x -> 5, y -> 5}>)(Val 3),{m-> <x -> fun y -> x * y, {x -> 3, y -> 5}>, x -> 3, y -> 5})
+Eval(x * y,{x -> 5, y -> 3})
+Eval(x * Eval(y,{x -> 5, y -> 3}),{x -> 5, y -> 3})
+Eval(x * Val 3,{x -> 5, y -> 3})
+Eval(Eval(x,{x -> 5, y -> 3}) * Val 3,{x -> 5, y -> 3})
+Eval(Val 5 * Val 3,{x -> 5, y -> 3})
+Val 15;
+

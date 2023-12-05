@@ -1,0 +1,21 @@
+MP3: Patterns of Recursion and Higher Order Functions
+
+Patterns of Recursion and Higher Order Functions
+
+Forward Recursion + Higher-Order Function Use
+MP3.1. Forward Recursion and fold_right, even_count_fr
+MP3.2. Forward Recursion and fold_right, remove_even
+
+Forward Recursion, simple
+MP3.3. Forward Recursion and fold_right, sift
+
+Forward Recursion, two lists
+MP3.4. Forward Recursion, apply_even_odd
+
+Tail Recursion + Higher-Order Function Use
+MP3.5. Tail Recursion and fold_left, even_count_tr
+MP3.6. Tail Recursion and fold_left, all_nonneg
+MP3.7. Tail Recursion and fold_left, count_element
+
+Tail Recursion, two lists
+MP3.8. Tail Recursion, concat

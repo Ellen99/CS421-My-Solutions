@@ -1,0 +1,9 @@
+Start Symbol = B
+B ::= {D | {G
+G ::= [A
+A ::= 4O | 8O | 4A | 8A
+O ::= ,E
+E ::= 4H | 8H | 4E | 8E
+H ::= ]I | ]D
+I ::= ,G
+D ::= }
